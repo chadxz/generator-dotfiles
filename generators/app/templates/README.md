@@ -1,0 +1,4 @@
+# <%= projectName %>
+
+## license
+[MIT](LICENSE)

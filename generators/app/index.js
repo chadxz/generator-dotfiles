@@ -15,10 +15,10 @@ module.exports = generators.Base.extend({
   prompting: function () {
     var done = this.async();
     this.prompt({
-      type    : 'input',
-      name    : 'name',
-      message : 'Your name (for license)',
-      default : this._gitConfigUserName(),
+      type: 'input',
+      name: 'name',
+      message: 'Your name (for license)',
+      default: this._gitConfigUserName()
     }, function (answers) {
       userName = answers.name;
       done();
@@ -68,6 +68,14 @@ module.exports = generators.Base.extend({
     packageJSON.scripts.jscs = "jscs .";
     packageJSON.scripts.start = "node index.js";
     this.fs.writeJSON(packageJSONPath, packageJSON);
+
+    this.fs.copyTpl(
+      this.templatePath('README.md'),
+      this.destinationPath('README.md'),
+      {
+        projectName: packageJSON.name
+      }
+    );
   },
   install: function () {
     this.npmInstall(['jshint', 'jscs'], { saveDev: true });
