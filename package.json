@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "git-config": "0.0.6",
+    "lodash": "^3.9.3",
     "yeoman-generator": "^0.20.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chadxz/generator-dotfiles.git"
   },
   "scripts": {
     "lint": "npm run jscs && npm run jshint",

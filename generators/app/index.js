@@ -1,10 +1,28 @@
 'use strict';
-
+var gitConfig = require('git-config');
 var generators = require('yeoman-generator');
+var _ = require('lodash');
+var userName;
 
 module.exports = generators.Base.extend({
   constructor: function () {
     generators.Base.apply(this, arguments);
+  },
+  _gitConfigUserName: function () {
+    var config = gitConfig.sync();
+    return _.get(config, 'user.name');
+  },
+  prompting: function () {
+    var done = this.async();
+    this.prompt({
+      type    : 'input',
+      name    : 'name',
+      message : 'Your name (for license)',
+      default : this._gitConfigUserName(),
+    }, function (answers) {
+      userName = answers.name;
+      done();
+    });
   },
   configuring: function () {
     this.fs.copy(
@@ -30,6 +48,15 @@ module.exports = generators.Base.extend({
     this.fs.copy(
       this.templatePath('es5/.jshintignore'),
       this.destinationPath('.jshintignore')
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('LICENSE'),
+      this.destinationPath('LICENSE'),
+      {
+        year: (new Date()).getFullYear(),
+        name: userName
+      }
     );
 
     // set npm run scripts
